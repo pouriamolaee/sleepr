@@ -7,7 +7,6 @@ async function bootstrap() {
   const app = await NestFactory.create(ReservationsModule);
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useLogger(app.get(Logger));
-  console.log('Test');
   await app.listen(3000);
 }
 bootstrap();
