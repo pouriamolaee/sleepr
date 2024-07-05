@@ -9,8 +9,11 @@ COPY tsconfig.json tsconfig.json
 RUN npm i -g pnpm
 RUN pnpm i
 
-COPY apps/reservations apps/reservations
+COPY apps/notifications apps/notifications
 COPY libs libs
+
+RUN cd apps/notifications && pnpm i
+
 
 RUN pnpm run build
 
@@ -29,7 +32,7 @@ RUN pnpm i --prod
 
 COPY --from=development /usr/src/app/dist ./dist
 
-CMD ["node", "./dist/apps/reservations/main"]
+CMD ["node", "./dist/apps/notifications/main"]
 
 
 
