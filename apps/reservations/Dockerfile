@@ -1,18 +1,20 @@
-FROM node:alpine AS developement
+FROM node:alpine AS development
 
 WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
 RUN npm i -g pnpm
-RUN pnpm i
 
 COPY apps/reservations apps/reservations
 COPY libs libs
 
-RUN pnpm run build
+RUN pnpm i -r
+
+RUN pnpm run build reservations
 
 FROM node:alpine AS production
 

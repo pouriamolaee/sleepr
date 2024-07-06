@@ -1,10 +1,11 @@
-FROM node:alpine AS developement
+FROM node:alpine AS development
 
 WORKDIR /usr/src/app
 
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 COPY tsconfig.json tsconfig.json
+COPY nest-cli.json nest-cli.json
 
 RUN npm i -g pnpm
 
@@ -13,7 +14,7 @@ COPY libs libs
 
 RUN pnpm i -r
 
-RUN pnpm run build
+RUN pnpm run build auth
 
 FROM node:alpine AS production
 
@@ -28,6 +29,6 @@ COPY pnpm-lock.yaml ./
 RUN npm i -g pnpm
 RUN pnpm i --prod
 
-COPY --from=developement /usr/src/app/dist ./dist
+COPY --from=development /usr/src/app/dist ./dist
 
 CMD ["node", "./dist/app/auth/main"]
